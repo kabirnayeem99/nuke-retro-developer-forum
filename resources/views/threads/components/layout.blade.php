@@ -65,7 +65,6 @@
 | | \||| \_/||   \ |  /_ 
 \_/  \|\____/\_|\_\\____\
         </pre>
-        <h1 style="margin: 0;">Nuke</h1>
         <p style="margin-top: 0;">A Retro Forum for Developers</p>
     </header>
 

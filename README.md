@@ -18,3 +18,4 @@ Minimalist UI. ASCII vibes. Maximum focus.
 <img src="docs/login.png" alt="Login" width="600" />  
 <img src="docs/register.png" alt="Register" width="600" />  
 <img src="docs/home.png" alt="Home" width="600" />
+<img src="docs/threads.png" alt="Threads" width="600" />

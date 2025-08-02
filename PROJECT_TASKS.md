@@ -153,18 +153,6 @@ Short name idea: **"ʿAtīq"** (عتيق) — simple, memorable, and thematicall
   * `belongsTo(User, as sender)`
   * `belongsTo(User, as receiver)`
 
----
-
-### 6. **Job**
-
-* Fields: `id`, `user_id`, `title`, `description`, `company`, `location`, `type`, `url`, `posted_at`
-* Relations:
-
-  * `belongsTo(User)`
-  * `hasMany(File)`
-
----
-
 ### 7. **Category**
 
 * For organizing threads.

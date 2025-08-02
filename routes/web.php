@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 
-Route::get("/feed", function () {
-    return view('feed.feed');
-})->name("feed");
+Route::get("/threads", [ThreadController::class, 'index'])->name('threads.index');
+Route::get('/threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
+Route::get('/threads/create', [ThreadController::class, 'create'])->name('threads.create');
+
 
 Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store'])->name('login.store');
