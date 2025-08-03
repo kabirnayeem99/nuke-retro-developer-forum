@@ -63,6 +63,39 @@
         ol.threads-list>li {
             margin-bottom: 0.5rem;
         }
+
+        .pagination {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+            padding: 0;
+            justify-content: center;
+            font-family: monospace;
+            margin-top: 1rem;
+        }
+
+        .pagination li {
+            display: inline;
+        }
+
+        .pagination li.disabled span {
+            color: #666;
+            cursor: default;
+        }
+
+        .pagination li a {
+            color: #f2c57c;
+            text-decoration: none;
+            border: 1px solid #f2c57c;
+            padding: 4px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination li a:hover {
+            background-color: #222;
+        }
     </style>
     @stack('styles')
 </head>

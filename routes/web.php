@@ -10,6 +10,7 @@ Route::redirect('/', '/threads')->name('home');
 Route::get("/threads", [ThreadController::class, 'index'])->name('threads.index');
 Route::get('/threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
 Route::get('/threads/create', [ThreadController::class, 'create'])->name('threads.create');
+Route::post('/threads', [ThreadController::class, 'store'])->name('threads.store');
 
 
 Route::get('/login', [SessionController::class, 'create'])->name('login');
