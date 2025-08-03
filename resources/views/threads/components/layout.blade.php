@@ -51,6 +51,18 @@
         button:hover {
             background-color: #222;
         }
+
+        ol>li {
+            margin-bottom: 0.75rem;
+        }
+
+        ol.threads-list {
+            padding-left: 1.25rem;
+        }
+
+        ol.threads-list>li {
+            margin-bottom: 0.5rem;
+        }
     </style>
     @stack('styles')
 </head>

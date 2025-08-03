@@ -23,6 +23,8 @@
         @endforeach
     </ul>
 
+
+
     @auth
         <div style="margin-top: 2rem;">
             <a href="{{ route('threads.create') }}">
