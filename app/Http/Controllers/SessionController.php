@@ -31,7 +31,7 @@ class SessionController extends Controller
             throw ValidationException::withMessages(['email' => trans('auth.failed')]);
         }
 
-        return redirect()->route('feed')->with('status', 'Login successful!');
+        return redirect()->route('home')->with('status', 'Login successful!');
     }
 
     /**

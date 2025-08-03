@@ -5,6 +5,8 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 
+Route::redirect('/', '/threads')->name('home');
+
 Route::get("/threads", [ThreadController::class, 'index'])->name('threads.index');
 Route::get('/threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
 Route::get('/threads/create', [ThreadController::class, 'create'])->name('threads.create');
