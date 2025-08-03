@@ -26,12 +26,31 @@
 
 
     @auth
-        <div style="margin-top: 2rem;">
-            <a href="{{ route('threads.create') }}">
-                <button>
-                    ➕ Create New Thread
-                </button>
-            </a>
-        </div>
+        <form action="{{ route('threads.reply', ['thread' => $thread->id]) }}" method="POST"
+            style="margin-top: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            @csrf
+            @if ($errors->any())
+                <div style="color: #ff6b6b; font-family: monospace; margin-bottom: 0.5rem;">
+                    <ul style="margin: 0; padding-left: 1.25rem;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <input type="hidden" name="thread_id" value="{{ $thread->id }}">
+            <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+
+
+            <textarea name="body" rows="4" placeholder="Write your reply here..." required
+                style="padding: 6px 10px; font-family: monospace; font-size: 1rem; border: 1px solid #f2c57c; background: transparent; color: #f2c57c; border-radius: 3px; resize: vertical;"></textarea>
+
+
+
+            <button type="submit">
+                📝 Reply
+            </button>
+        </form>
     @endauth
+
 @endsection

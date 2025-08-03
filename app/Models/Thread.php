@@ -10,12 +10,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Thread extends Model
 {
     /** @use HasFactory<\Database\Factories\ThreadFactory> */
+
     use HasFactory;
+
+    protected $guarded = [];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
 
     public function posts(): HasMany
     {

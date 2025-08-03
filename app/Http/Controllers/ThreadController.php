@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreThreadRequest;
 use App\Http\Requests\UpdateThreadRequest;
+use App\Jobs\GenerateRandomPosts;
+use App\Models\Category;
 use App\Models\Thread;
+use App\Models\User;
+use Str;
 
 class ThreadController extends Controller
 {
@@ -14,9 +18,12 @@ class ThreadController extends Controller
     public function index()
     {
         $threads = Thread::latest()->paginate(10);
+        $categories = Category::all();
 
-        return view('threads.index', compact('threads'));
+
+        return view('threads.index', compact('threads', 'categories'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -31,8 +38,20 @@ class ThreadController extends Controller
      */
     public function store(StoreThreadRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        $thread = Thread::create([
+            'title' => $validated['title'],
+            'body' => $validated['body'],
+            'user_id' => auth()->id(),
+            'slug' => Str::slug($validated['title']),
+            'category_id' => $validated['category_id'],
+        ]);
+
+        GenerateRandomPosts::dispatch($thread);
+        return redirect()->route('threads.show', $thread)->with('success', 'Thread created successfully.');
     }
+
 
     /**
      * Display the specified resource.
@@ -41,6 +60,7 @@ class ThreadController extends Controller
     {
         return view('threads.show', compact('thread'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

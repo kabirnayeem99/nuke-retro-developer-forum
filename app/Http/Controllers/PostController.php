@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use App\Models\Thread;
 
 class PostController extends Controller
 {
@@ -29,7 +30,16 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        $post = Post::create([
+            'body' => $validated['body'],
+            'thread_id' => $validated['thread_id'],
+            'user_id' => $validated['user_id'],
+        ]);
+
+
+        return redirect()->route('threads.show', $post->thread_id)->with('success', 'Reply posted successfully.');
     }
 
     /**
