@@ -22,3 +22,5 @@ Minimalist UI. ASCII vibes. Maximum focus.
 <img src="docs/conversations.png" alt="Conversation" width="600" />
 <img src="docs/new-thread.png" alt="New Thread" width="600" />
 <img src="docs/reply.png" alt="Reply to Thread" width="600" />
+
+

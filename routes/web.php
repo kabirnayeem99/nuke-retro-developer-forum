@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GeminiController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
@@ -7,6 +8,8 @@ use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/threads')->name('home');
+
+Route::get('/generate-sci-fi-thread', [GeminiController::class, 'generateSciFiThread']);
 
 Route::get("/threads", [ThreadController::class, 'index'])->name('threads.index');
 Route::post('/threads', [ThreadController::class, 'store'])->middleware('auth')->name('threads.store');
