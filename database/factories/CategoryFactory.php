@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
@@ -16,11 +17,37 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+        $techCategories = [
+            'programming',
+            'linux',
+            'webdev',
+            'opensource',
+            'machinelearning',
+            'androiddev',
+            'datascience',
+            'infosec',
+            'devops',
+            'selfhosted',
+            'startup',
+            'hardware',
+            'ai',
+            'productivity',
+            'techpolicy',
+            'sysadmin',
+            'gamedev',
+            'reverseengineering',
+            'computerscience',
+            'terminal'
+        ];
+
+        $name = $this->faker->unique()->randomElement($techCategories);
+
         return [
-            'name' => $this->faker->unique()->words(2, true),   // e.g. "dynamic rust"
-            'slug' => $this->faker->unique()->slug,
+            'name' => $name,
+            'slug' => Str::slug($name),
             'description' => $this->faker->sentence(8),
         ];
     }
+
 
 }

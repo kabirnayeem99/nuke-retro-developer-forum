@@ -21,4 +21,9 @@ class Thread extends Model
     {
         return $this->hasMany(Post::class);
     }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
