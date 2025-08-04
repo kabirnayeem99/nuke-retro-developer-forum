@@ -32,7 +32,7 @@ class GeminiController extends Controller
                 [
                     'parts' => [
                         [
-                            'text' => 'Generate a very weird, science fiction type forum thread about ' . $categoryName . '. Include a title and a body for the post.'
+                            'text' => 'Generate a very weird, science fiction type forum thread about ' . $categoryName . '. Include a title and a body for the post. Keep the tone reddit like, with a Indian vibe, no blasphemy.'
                         ]
                     ]
                 ]
@@ -100,6 +100,7 @@ class GeminiController extends Controller
                 'category_id' => $randomCategory->id,
             ]);
 
+            $this->generateRepliesForThread($thread);
 
             return redirect()->route('threads.show', compact('thread'))->with('success', 'Thread created successfully.');
         } catch (\Exception $e) {
@@ -107,10 +108,78 @@ class GeminiController extends Controller
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
-            return response()->json([
-                'error' => 'An internal server error occurred.',
-                'details' => $e->getMessage()
-            ], 500);
+            return redirect()->route('threads.show', compact('thread'))->with('Failure', 'Thread creation failed.');
+        }
+    }
+
+    private function generateRepliesForThread(Thread $thread)
+    {
+        $apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+        $apiKey = config('services.gemini.api_key');
+
+        if (!$apiKey) {
+            return;
+        }
+
+        $faker = \Faker\Factory::create();
+        $randomCount = rand(2, 5); // Number of replies
+
+        try {
+            foreach (range(1, $randomCount) as $_) {
+                $payload = [
+                    'contents' => [
+                        [
+                            'parts' => [
+                                [
+                                    'text' => "Write a weird, sarcastic or surreal reply comment to a forum thread titled: '{$thread->title}'. Keep a reddit-like tone, with a Indian vibe. The reply should have a Indian vibe and arabic lone words and slurs, no blasphemy."
+                                ]
+                            ]
+                        ]
+                    ],
+                    'generation_config' => [
+                        'response_mime_type' => 'application/json',
+                        'response_schema' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'body' => [
+                                    'type' => 'string'
+                                ]
+                            ],
+                            'required' => ['body']
+                        ]
+                    ]
+                ];
+
+                $response = Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                    'X-goog-api-key' => $apiKey,
+                ])->post($apiUrl, $payload);
+
+                if ($response->failed()) {
+                    Log::warning("Failed to get reply from Gemini for thread: {$thread->id}");
+                    continue;
+                }
+
+                // The model's response is nested; extract the JSON string
+                $responseContent = $response->json();
+                $generatedText = $responseContent['candidates'][0]['content']['parts'][0]['text'];
+
+                // Since we specified JSON output with a schema, we can decode it directly
+                $postData = json_decode($generatedText, true);
+                $responseContent = $response->json();
+
+                $thread->posts()->create([
+                    'body' => $postData['body'] ?? fake()->sentence(10),
+                    'user_id' => User::inRandomOrder()->first()->id,
+                    'thread_id' => $thread->id,
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Error generating replies', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
         }
     }
 }
